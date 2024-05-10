@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rec-ui
+spec:
+  replicas: 2  # Scale to two pods for redundancy
+  selector:
+    matchLabels:
+      app: rec-ui
+  template:
+    metadata:
+      labels:
+        app: rec-ui
+    spec:
+      containers:
+      - name: rec-ui
+        image: saicasm/rec-ui:latest  # Replace with your image name
+        ports:
+        - containerPort: 3000  # Adjust port if needed
+      livenessProbe:  # Liveness probe for self-healing
+        httpGet:
+          path: /_next/static/chunks/pages/index.js  # Adjust path if your app has a different entry point
+          port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      readinessProbe:  # Readiness probe for graceful scaling
+        httpGet:
+          path: /_next/data/.next/static/chunks/pages/index.js  # Adjust path if needed
+          port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
