@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-3 #add nwme
+  namespace: distributed-systems
+  labels:
+    app: server-3
+spec:
+  replicas: 1  # Scale to two pods for redundancy
+  selector:
+    matchLabels:
+      app: server-3
+  template:
+    metadata:
+      labels:
+        app: server-3
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: blackbox
+      containers:
+      - name: server-3
+        image: ghcr.io/saicasm/dis-ml:main  # Replace with your image name containing dependencies
+        imagePullPolicy: Always  # Always pull the image
+        # ports:
+        # - containerPort: 8080  # Adjust port if needed
+        resources:
+          requests:  # Resource requests for memory and CPU
+            memory: "5Gi"
+            cpu: "2"
+          limits:  # Resource limits for upper bounds
+            memory: "5Gi"
+            cpu: "2"
+        envFrom:
+          - configMapRef:
+              name: server-3-config
+
