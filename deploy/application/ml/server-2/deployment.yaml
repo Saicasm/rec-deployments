@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-2 #add nwme
+  namespace: distributed-systems
+  labels:
+    app: server-2
+spec:
+  replicas: 1  # Scale to two pods for redundancy
+  selector:
+    matchLabels:
+      app: server-2
+  template:
+    metadata:
+      labels:
+        app: server-2
+    spec:
+      containers:
+      - name: server-2
+        image: intervention/server-2:v1.3  # Replace with your image name containing dependencies
+        imagePullPolicy: Always  # Always pull the image
+        # ports:
+        # - containerPort: 8080  # Adjust port if needed
+        resources:
+          requests:  # Resource requests for memory and CPU
+            memory: "2Gi"
+            cpu: "1"
+          limits:  # Resource limits for upper bounds
+            memory: "2Gi"
+            cpu: "1"
+        envFrom:
+          - configMapRef:
+              name: server-2-config

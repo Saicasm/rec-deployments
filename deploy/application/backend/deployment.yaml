@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-app
+  namespace: distributed-systems
+  labels:
+    app: search-app
+spec:
+  replicas: 2  # Scale to two pods for redundancy
+  selector:
+    matchLabels:
+      app: search-app
+  template:
+    metadata:
+      labels:
+        app: search-app
+    spec:
+      containers:
+      - name: search-app
+        image: ghcr.io/saicasm/recomendation-server:main  # Replace with your image name containing dependencies
+        imagePullPolicy: Always  # Always pull the image
+        ports:
+        - containerPort: 8080  # Adjust port if needed
+        resources:
+          requests:  # Resource requests for memory and CPU
+            memory: "2Gi"
+            cpu: "1"
+          limits:  # Resource limits for upper bounds
+            memory: "2Gi"
+            cpu: "1"
+        envFrom:
+          - configMapRef:
+              name: search-app-config

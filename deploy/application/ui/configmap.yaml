@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rec-ui-config
+  labels:
+    app: rec-ui
+  namespace: distributed-systems
+data:
+  NEXT_PUBLIC_SEARCH_SERVICE: "app.distributed-systems.com:30080/api/v1/rec"
+
+# --- 
+
+
+# apiVersion: v1
+# kind: ConfigMap 
+# metadata:
+#   name: app-v2-config
+#   labels:
+#     app: app-v2
+#   namespace: distributed-systems
+# data:
+#   APP_V1_ENDPOINT: "http://app-v1-svc:8000"

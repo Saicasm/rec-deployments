@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dispatcher #add nwme
+  namespace: distributed-systems
+  labels:
+    app: dispatcher
+spec:
+  replicas: 1  # Scale to two pods for redundancy
+  selector:
+    matchLabels:
+      app: dispatcher
+  template:
+    metadata:
+      labels:
+        app: dispatcher
+    spec:
+      containers:
+      - name: dispatcher
+        image: intervention/dispatcher:v1.4 # Replace with your image name containing dependencies
+        imagePullPolicy: Always  # Always pull the image
+        # ports:
+        # - containerPort: 8080  # Adjust port if needed
+        resources:
+          requests:  # Resource requests for memory and CPU
+            memory: "2Gi"
+            cpu: "1"
+          limits:  # Resource limits for upper bounds
+            memory: "2Gi"
+            cpu: "1"
+        envFrom:
+          - configMapRef:
+              name: dispatcher-config
+

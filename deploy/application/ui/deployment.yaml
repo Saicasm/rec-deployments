@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rec-ui
+  namespace: distributed-systems
+  labels:
+    app: rec-ui
+spec:
+  replicas: 2  # Scale to two pods for redundancy
+  selector:
+    matchLabels:
+      app: rec-ui
+  template:
+    metadata:
+      labels:
+        app: rec-ui
+    spec:
+      containers:
+      - name: rec-ui
+        image: ghcr.io/saicasm/spotify-recc-ui:main  # Replace with your image name
+        ports:
+        - containerPort: 3000  # Adjust port if needed
+        envFrom:
+          - configMapRef:
+              name: rec-ui-config
+        resources:
+          requests:
+            memory: "64Mi"  # Adjust memory limits as needed
+            cpu: "250m"  # Adjust CPU limits as needed
+          limits:
+            memory: "128Mi"  # Adjust memory limits as needed
+            cpu: "500m"  # Adjust CPU limits as needed

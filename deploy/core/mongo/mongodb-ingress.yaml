@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongo-ingress
+  namespace: mongo
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: db.distributed-systems.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mongo-svc
+                port:
+                  number: 27017
